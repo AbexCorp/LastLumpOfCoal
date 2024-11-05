@@ -11,6 +11,10 @@ public class Resources : MonoBehaviour
     [SerializeField]
     private Vector2 _foodLocation;
 
+    public Vector2 CoalLocation => _coalLocation;
+    public Vector2 FoodLocation => _foodLocation;
+
+
     public int NumberOfEmployees { get; private set; }
     public int EmployeesOnCoal { get; private set; }
     public int EmployeesOnFood { get; private set; }
@@ -38,6 +42,8 @@ public class Resources : MonoBehaviour
         Train.Instance.OnDoorOpen += StartTimer;
         Train.Instance.OnDoorClose += StopTimer;
         MenuManager.Instance.UpdateResourceBar();
+        Train.Instance.OnDoorClose += CullVisualWorkers;
+        Train.Instance.OnDoorOpen += SpawnVisualWorkers;
     }
 
 
@@ -164,6 +170,46 @@ public class Resources : MonoBehaviour
         EmployeesOnCoal = 0;
         EmployeesOnFood = 0;
     }
+
+
+
+    [SerializeField]
+    private Worker _workerPrefab;
+    private List<Worker> _workers = new();
+    private void SpawnVisualWorkers()
+    {
+        for(int i = 0; i < EmployeesOnCoal; i++)
+        {
+            Worker worker = Instantiate(_workerPrefab, Train.Instance.TrainPosition, Quaternion.identity);
+            worker.ChooseWorkerType(Worker.WorkerType.Coal);
+            _workers.Add(worker);
+        }
+        for(int i = 0; i < EmployeesOnFood; i++)
+        {
+            Worker worker = Instantiate(_workerPrefab, Train.Instance.TrainPosition, Quaternion.identity);
+            worker.ChooseWorkerType(Worker.WorkerType.Food);
+            _workers.Add(worker);
+        }
+    }
+    public void CallBackVisualWorkers()
+    {
+        foreach(var x in _workers)
+            x.ReturnToTrain();
+    }
+    private void CullVisualWorkers()
+    {
+        foreach (var x in _workers)
+        {
+            if (x == null)
+                continue;
+            x.KillWorker();
+        }
+        _workers.Clear();
+    }
+
+
+
+
 
     private void OnDrawGizmos()
     {

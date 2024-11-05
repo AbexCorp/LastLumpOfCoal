@@ -122,6 +122,7 @@ public class MenuManager : MonoBehaviour
         _coalWorkersSlider.value = 0;
         _foodWorkersSlider.value = 0;
         SlidersChange();
+        Resources.Instance.CallBackVisualWorkers();
     }
     public void CloseDoors()
     {

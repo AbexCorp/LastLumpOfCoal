@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
     public bool IsDrivingTrain => _isDrivingTrain;
 
 
+    [SerializeField]
+    private GameObject _light;
+
+
 
     private void Awake()
     {
@@ -36,6 +40,8 @@ public class Player : MonoBehaviour
         _isDrivingTrain = true;
         SnapPlayerToTrain();
         _rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
+        Train.Instance.OnDoorClose += TurnOffLight;
+        Train.Instance.OnDoorOpen += TurnOnLight;
     }
 
     
@@ -99,5 +105,14 @@ public class Player : MonoBehaviour
     {
         transform.position = Train.Instance.TrainPosition;
         Physics2D.SyncTransforms();
+    }
+
+    public void TurnOnLight()
+    {
+        _light.SetActive(true);
+    }
+    public void TurnOffLight()
+    {
+        _light.SetActive(false);
     }
 }

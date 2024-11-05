@@ -62,17 +62,32 @@ public class Train : MonoBehaviour
     {
         if (!Application.isPlaying || MenuManager.Instance == null || Player.Instance == null)
             return;
-        if (Player.Instance.IsDrivingTrain)
-            return;
-        MenuManager.Instance.ShowTrainMenu(doorsOpen: true);
-        Player.Instance.PlayerEnteredTrain();
+
+        if(collision.gameObject.tag == "Player")
+        {
+            if (Player.Instance.IsDrivingTrain)
+                return;
+            MenuManager.Instance.ShowTrainMenu(doorsOpen: true);
+            Player.Instance.PlayerEnteredTrain();
+        }
+        else if(collision.gameObject.tag == "Worker")
+        {
+            collision.gameObject.GetComponent<Worker>().EnterTrain();
+        }
     }
     public void OnTriggerExit2D(Collider2D collision)
     {
         if (!Application.isPlaying || MenuManager.Instance == null || Player.Instance == null)
             return;
-        MenuManager.Instance.HideTrainMenu();
-        Player.Instance.PlayerLeftTrain();
+        if(collision.gameObject.tag == "Player")
+        {
+            MenuManager.Instance.HideTrainMenu();
+            Player.Instance.PlayerLeftTrain();
+        }
+        else if(collision.gameObject.tag == "Worker")
+        {
+            collision.gameObject.GetComponent<Worker>().ExitTrain();
+        }
     }
 
 

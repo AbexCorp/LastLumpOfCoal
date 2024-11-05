@@ -89,9 +89,7 @@ public class Worker : MonoBehaviour
     public void KillWorker()
     {
         if(isInsideTheTrain)
-        {
-            //Return safely, no break
-        }
+            Resources.Instance.VisualWorkerReturned(ResourceWorkerType);
         Destroy(gameObject);
     }
 

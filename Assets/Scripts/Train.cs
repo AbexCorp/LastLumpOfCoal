@@ -105,6 +105,8 @@ public class Train : MonoBehaviour
     public void CloseDoor()
     {
         Resources.Instance.CullRemainingEmployees();
+        MenuManager.Instance.UpdateResourceBar();
+        MenuManager.Instance.ChangeSliderAfterDeath();
         if(Resources.Instance.NumberOfEmployees == 0)
         {
             LoseGameOutOfEmployees();

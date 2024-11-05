@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Resources : MonoBehaviour
@@ -145,16 +146,22 @@ public class Resources : MonoBehaviour
         if (EmployeesOnCoal + EmployeesOnFood == 0)
             return;
         int rng = (int)Mathf.Round(UnityEngine.Random.Range(minInclusive: 1, maxInclusive: EmployeesOnCoal + EmployeesOnFood));
+        Worker.WorkerType? type = null;
         if(rng <= EmployeesOnCoal && EmployeesOnCoal > 0)
         {
             NumberOfEmployees -= 1;
             EmployeesOnCoal -= 1;
+            type = Worker.WorkerType.Coal;
         }
         else if(rng > EmployeesOnCoal && rng <= EmployeesOnFood && EmployeesOnFood > 0)
         {
             NumberOfEmployees -= 1;
             EmployeesOnFood -= 1;
+            type = Worker.WorkerType.Food;
         }
+
+        if(type != null)
+            _workers.FirstOrDefault(x => x != null && x.ResourceWorkerType == type).KillWorker();
 
         if(NumberOfEmployees <= 0)
         {
@@ -205,6 +212,20 @@ public class Resources : MonoBehaviour
             x.KillWorker();
         }
         _workers.Clear();
+    }
+    public void VisualWorkerReturned(Worker.WorkerType type)
+    {
+        switch(type)
+        {
+            case Worker.WorkerType.Coal:
+                EmployeesOnCoal--;
+                break;
+            case Worker.WorkerType.Food:
+                EmployeesOnFood--;
+                break;
+        }
+        MenuManager.Instance.UpdateResourceBar();
+        MenuManager.Instance.ChangeSliderAfterDeath();
     }
 
 

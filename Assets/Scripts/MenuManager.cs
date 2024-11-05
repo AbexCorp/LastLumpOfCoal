@@ -85,7 +85,7 @@ public class MenuManager : MonoBehaviour
         _foodLimit.text = Danger.Instance.FoodScarcity.ToString();
         _mapSafety.text = Danger.Instance.DangerLevel.ToString();
     }
-    public void SlidersChange()
+    public void SlidersChange() //This one is for when player changes slider
     {
         Resources.Instance.ChangeCoalEmployees((int)_coalWorkersSlider.value);
         Resources.Instance.ChangeFoodEmployees((int)_foodWorkersSlider.value);
@@ -96,7 +96,7 @@ public class MenuManager : MonoBehaviour
         _coalWorkersText.text = Resources.Instance.EmployeesOnCoal.ToString();
         _foodWorkersText.text = Resources.Instance.EmployeesOnFood.ToString();
     }
-    public void ChangeSliderAfterDeath()
+    public void ChangeSliderAfterDeath() //This one is to update without player input. I don't know why there are two versions...
     {
         _coalWorkersSlider.value = Resources.Instance.EmployeesOnCoal;
         _foodWorkersSlider.value = Resources.Instance.EmployeesOnFood;
@@ -116,13 +116,6 @@ public class MenuManager : MonoBehaviour
     {
         _coalWorkersSlider.interactable = true;
         _foodWorkersSlider.interactable= true;
-    }
-    public void ResetEmployees()
-    {
-        _coalWorkersSlider.value = 0;
-        _foodWorkersSlider.value = 0;
-        SlidersChange();
-        Resources.Instance.CallBackVisualWorkers();
     }
     public void CloseDoors()
     {

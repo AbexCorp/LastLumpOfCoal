@@ -200,6 +200,7 @@ public class Resources : MonoBehaviour
     }
     public void CallBackVisualWorkers()
     {
+        AudioManager.Instance.Whistle();
         foreach(var x in _workers)
             x.ReturnToTrain();
     }

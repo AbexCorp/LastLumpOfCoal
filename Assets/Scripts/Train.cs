@@ -144,6 +144,7 @@ public class Train : MonoBehaviour
         _brake = false;
         _rigidBody.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
 
+        AudioManager.Instance.Steam();
         Danger.Instance.PrepNewMap();
         MenuManager.Instance.ShowTrainMenu(doorsOpen: false);
     }
@@ -158,7 +159,10 @@ public class Train : MonoBehaviour
             if (DistanceTravelled % 200 == 0)
                 Resources.Instance.DepleteCoal(1);
             if (DistanceTravelled % 500 == 0 && DistanceTravelled % 1000 != 0)
+            {
                 Resources.Instance.DepleteFood(Resources.Instance.NumberOfEmployees + 1);
+                AudioManager.Instance.Whistle();
+            }
             if (DistanceTravelled % 1000 == 0)
             {
                 StartBrakingTrain();
